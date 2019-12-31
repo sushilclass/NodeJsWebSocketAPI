@@ -32,6 +32,24 @@ ws.on('connection',(ws, req) =>{
 			});
 				
 		}
+		
+		if(pathName == '/customers/Id'){
+			clients.push(ws);			
+		}
+		if(pathName == '/customers/id'){
+			Customer.findfindById(_id).exec()
+			.then(docs=>{
+				clients.forEach(function each(client){
+				client.send(JSON.stringify(docs)); // send data to client
+				});
+			})
+			.catch(error=>{
+				clients.forEach(function each(client){
+				client.send(error);
+				});
+			});
+				
+		}
 	})
 });
 
